@@ -3,6 +3,7 @@
 export(makehm)
 export(makerelativehm)
 import(ComplexHeatmap)
+import(circlize)
 import(reshape)
 import(reshape2)
 import(stats)

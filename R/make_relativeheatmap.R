@@ -48,7 +48,7 @@ preprelativehm <- function(df.netPx1outgoing) {
 #'
 #' @return a heatmap in which row (pathway) values are scaled between 0 and 1.
 #' @export
-#' @import ComplexHeatmap reshape2
+#' @import ComplexHeatmap reshape2 circlize
 #' @examples
 makerelativehm <- function(cellchatobj,
                            col_fun,
@@ -57,7 +57,13 @@ makerelativehm <- function(cellchatobj,
                            fontsize,
                            hmtitle) {
   hmobj <- cellchatobj
-  col_fun = cols
+
+  if(!is.na(col_fun)) {
+    col_fun = cols
+  } else {
+    col_fun <- colorRamp2(c(0, 0.005, 1), c("white", "darkseagreen2", "darkgreen"))
+  }
+
   size <- as.numeric(fontsize)
   title <- as.character(hmtitle)
 
