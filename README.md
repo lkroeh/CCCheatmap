@@ -5,7 +5,13 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of CCCheatmap is to ...
+The goal of CCCheatmap is to build custom heatmaps from the output of CellChat.
+These are modified versions of the heatmaps produced by their command \code{netVisual_heatmap}.
+It allows the user to choose specific populations as senders and receivers for
+which to consider signaling.
+The colors are the sum of the communication probabilities for a given pathway 
+between two designated cell types.
+
 
 ## Installation
 
@@ -22,6 +28,8 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(CCCheatmap)
-## basic example code
+cellchatobject
+hm <- makehm(cellchatobject)
+hm
 ```
 
