@@ -24,7 +24,7 @@ devtools::install_github("lkroeh/CCCheatmap")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to make a heatmap:
 
 ``` r
 library(CCCheatmap)
