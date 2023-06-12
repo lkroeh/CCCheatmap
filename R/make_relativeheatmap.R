@@ -48,7 +48,7 @@ preprelativehm <- function(df.netPx1outgoing) {
 #'
 #' @return a heatmap in which row (pathway) values are scaled between 0 and 1.
 #' @export
-#' @import ComplexHeatmap reshape2 circlize
+#' @import ComplexHeatmap reshape2 circlize grid
 #' @examples
 makerelativehm <- function(cellchatobj,
                            col_fun,
@@ -59,13 +59,23 @@ makerelativehm <- function(cellchatobj,
   hmobj <- cellchatobj
 
   if(!is.na(col_fun)) {
-    col_fun = cols
+    col_fun = col_fun
   } else {
     col_fun <- colorRamp2(c(0, 0.005, 1), c("white", "darkseagreen2", "darkgreen"))
   }
 
-  size <- as.numeric(fontsize)
-  title <- as.character(hmtitle)
+  if(!is.na(fontsize)) {
+    size <- as.numeric(fontsize)
+  } else {
+    size <- as.numeric(6)
+  }
+
+  if(!is.na(title)) {
+    title <- as.character(hmtitle)
+  } else {
+    title <- as.character("")
+  }
+
 
   #add if not centr, run compute centrality
   df.netPx <- reshape2::melt(hmobj@netP$centr, value.name = "outdeg")

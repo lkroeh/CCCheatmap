@@ -9,7 +9,7 @@ Description: Create Custom Heatmaps from CellChat Output
     specific cell populations.
 License: GPL (>= 3)
 Encoding: UTF-8
-Imports: ComplexHeatmap, reshape2, stats, reshape, circlize
+Imports: ComplexHeatmap, reshape2, stats, reshape, circlize, grid
 LazyData: true
 RoxygenNote: 7.2.3
 URL: https://github.com/lkroeh/CCCheatmap

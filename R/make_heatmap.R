@@ -46,7 +46,7 @@ prephm <- function(df.netPx1outgoing) {
 #' @return a list of heatmaps
 #' @export
 #'
-#' @import ComplexHeatmap reshape2 reshape
+#' @import ComplexHeatmap reshape2 reshape grid circlize
 #' @examples
 #'
 #' hm <- makehm(cellchatobj = cellchatobj, col_fun = cols)
