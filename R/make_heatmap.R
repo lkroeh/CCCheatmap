@@ -78,12 +78,12 @@ makehm <- function(cellchatobj,
                                        cluster_column_slices = FALSE,
                                        show_row_dend = FALSE,
                                        row_title = "Pathways",
-                                       row_names_gp = gpar(fontsize = size),
+                                       row_names_gp = grid::gpar(fontsize = size),
                                        column_split = paste0(c(rep("outgoing,", length(sources)), rep("incoming,", length(targets)-1), rep("incoming", 1))),
                                        column_names_gp = grid::gpar(fontsize = size),
                                        column_title_side="bottom",
                                        col = col_fun) +
-    rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = gpar(fontsize = size)))
+    rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = grid::gpar(fontsize = size)))
 
   return(ht_allctrl)
 }

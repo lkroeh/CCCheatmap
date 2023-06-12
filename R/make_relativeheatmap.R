@@ -54,8 +54,8 @@ makerelativehm <- function(cellchatobj,
                            col_fun,
                            sources,
                            targets,
-                           fontsize,
-                           hmtitle) {
+                           fontsize=6,
+                           hmtitle = "") {
   hmobj <- cellchatobj
 
   if(!is.na(col_fun)) {
@@ -64,18 +64,7 @@ makerelativehm <- function(cellchatobj,
     col_fun <- colorRamp2(c(0, 0.005, 1), c("white", "darkseagreen2", "darkgreen"))
   }
 
-  if(!is.na(fontsize)) {
-    size <- as.numeric(fontsize)
-  } else {
-    size <- as.numeric(6)
-  }
-
-  if(!is.na(title)) {
-    title <- as.character(hmtitle)
-  } else {
-    title <- as.character("")
-  }
-
+  size <- if(fontsize) as.numeric(fontsize) else 1
 
   #add if not centr, run compute centrality
   df.netPx <- reshape2::melt(hmobj@netP$centr, value.name = "outdeg")
@@ -94,12 +83,12 @@ makerelativehm <- function(cellchatobj,
                                        cluster_column_slices = FALSE,
                                        show_row_dend = FALSE,
                                        row_title = "Pathways",
-                                       row_names_gp = gpar(fontsize = size),
+                                       row_names_gp = grid::gpar(fontsize = size),
                                        column_split = paste0(c(rep("outgoing,", length(sources)), rep("incoming,", length(targets)-1), rep("incoming", 1))),
                                        column_names_gp = grid::gpar(fontsize = size),
                                        column_title_side="bottom",
                                        col = col_fun) +
-    rowAnnotation(pathway = anno_barplot(rowSums(dfall4[[2]]))) + rowAnnotation(rn = anno_text(rownames(dfall4[[2]]), gp = gpar(fontsize = size)))
+    rowAnnotation(pathway = anno_barplot(rowSums(dfall4[[2]]))) + rowAnnotation(rn = anno_text(rownames(dfall4[[2]]), gp = grid::gpar(fontsize = size)))
 
   return(ht_allctrl)
 }
