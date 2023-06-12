@@ -1,15 +1,12 @@
-# This function preps the df
-#' Title
+#' Preps df for relative heatmap
 #'
 #' @param df.netPx1outgoing df
 #'
-#' @return a df for input to the heatmap
-#'
-#' @import reshape stats reshape2
+#' @return df for heatmap
+#' @import reshape stats
 #'
 #' @examples
-#' df <- prephm(df)
-prephm <- function(df.netPx1outgoing) {
+preprelativehm <- function(df.netPx1outgoing) {
   dfoutgoing <- reshape::cast(df.netPx1outgoing, pathway_name~source, value = 'prob', fun.aggregate = 'sum')
   dfincoming<- reshape::cast(df.netPx1outgoing, pathway_name~target, value = 'prob', fun.aggregate = 'sum')
 
@@ -29,40 +26,43 @@ prephm <- function(df.netPx1outgoing) {
   #order by decreasing y axis
   order <- order(rowSums(dfall3), decreasing = T)
   dfall5 <- dfall3[order(-rowSums(dfall3)),]
-  return(dfall5)
+
+  mat <- dfall5
+  mat <- sweep(mat, 1L, apply(mat, 1, max), '/', check.margin = FALSE)
+  dfall4 <- mat
+  test1 <- list()
+  test1[[1]] <- dfall4
+  test1[[2]] <- dfall5
+  return(test1)
 }
 
 
-# This function creates a heatmap
-#' Title
+#' This function makes a heatmap with relative pathway singnaling strength
 #'
 #' @param cellchatobj a cellchat object
 #' @param col_fun color function
-#' @param sources a list of cell types to be used as sender cells
-#' @param targets a list of cell types to be used as receiver cells
-#' @param fontsize a number
-#' @param hmtitle a string for a title
+#' @param sources list of cell types that are sender cells
+#' @param targets list of cell types that are receiver cells
+#' @param fontsize numeric
+#' @param hmtitle string as title
 #'
-#' @return a list of heatmaps
+#' @return a heatmap in which row (pathway) values are scaled between 0 and 1.
 #' @export
-#'
-#' @import ComplexHeatmap reshape2 reshape
+#' @import ComplexHeatmap reshape2
 #' @examples
-#'
-#' hm <- makehm(cellchatobj = cellchatobj, col_fun = cols)
-#' hm[[1]]
-makehm <- function(cellchatobj,
-                   col_fun,
-                   sources,
-                   targets,
-                   fontsize,
-                   hmtitle) {
+makerelativehm <- function(cellchatobj,
+                           col_fun,
+                           sources,
+                           targets,
+                           fontsize,
+                           hmtitle) {
   hmobj <- cellchatobj
   col_fun = cols
   size <- as.numeric(fontsize)
   title <- as.character(hmtitle)
 
-  df.netPx <- reshape2::melt(hmobj@netP$prob, value.name = "prob")
+  #add if not centr, run compute centrality
+  df.netPx <- reshape2::melt(hmobj@netP$centr, value.name = "outdeg")
   colnames(df.netPx)[1:3] <- c("source","target","pathway_name")
 
   #choose cells
@@ -70,8 +70,8 @@ makehm <- function(cellchatobj,
 
   dfall4 <- as.matrix(prephm(df.netPx1outgoing))
 
-  ht_allctrl = ComplexHeatmap::Heatmap(dfall4, name = hmtitle,
-                                       top_annotation = HeatmapAnnotation(Ctrl = anno_barplot(as.numeric(colSums(dfall4)))),
+  ht_allctrl = ComplexHeatmap::Heatmap(dfall4[[1]], name = hmtitle,
+                                       top_annotation = HeatmapAnnotation(Ctrl = anno_barplot(as.numeric(colSums(dfall4[[2]])))),
                                        show_column_dend = FALSE,
                                        cluster_rows = FALSE,
                                        cluster_columns = FALSE,
@@ -83,10 +83,7 @@ makehm <- function(cellchatobj,
                                        column_names_gp = grid::gpar(fontsize = size),
                                        column_title_side="bottom",
                                        col = col_fun) +
-    rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = gpar(fontsize = size)))
+    rowAnnotation(pathway = anno_barplot(rowSums(dfall4[[2]]))) + rowAnnotation(rn = anno_text(rownames(dfall4[[2]]), gp = gpar(fontsize = size)))
 
   return(ht_allctrl)
 }
-
-
-
