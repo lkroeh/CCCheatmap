@@ -4,14 +4,7 @@
 \alias{makehm}
 \title{Title}
 \usage{
-makehm(
-  cellchatobj = cellchatobj,
-  col_fun = cols,
-  sources = c(),
-  targets = c(),
-  fontsize = 4,
-  hmtitle = "title"
-)
+makehm(cellchatobj, col_fun, sources, targets, fontsize, hmtitle)
 }
 \arguments{
 \item{cellchatobj}{a cellchat object}

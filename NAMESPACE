@@ -2,5 +2,6 @@
 
 export(makehm)
 import(ComplexHeatmap)
+import(reshape)
 import(reshape2)
 import(stats)

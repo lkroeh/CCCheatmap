@@ -5,13 +5,13 @@
 #'
 #' @return a df for input to the heatmap
 #'
-#' @import reshape2 stats
+#' @import reshape stats reshape2
 #'
 #' @examples
 #' df <- prephm(df)
 prephm <- function(df.netPx1outgoing) {
-  dfoutgoing <- reshape2::cast(df.netPx1outgoing, pathway_name~source, value = 'prob', fun.aggregate = 'sum')
-  dfincoming<- reshape2::cast(df.netPx1outgoing, pathway_name~target, value = 'prob', fun.aggregate = 'sum')
+  dfoutgoing <- reshape::cast(df.netPx1outgoing, pathway_name~source, value = 'prob', fun.aggregate = 'sum')
+  dfincoming<- reshape::cast(df.netPx1outgoing, pathway_name~target, value = 'prob', fun.aggregate = 'sum')
 
   rownames(dfoutgoing) <- dfoutgoing$pathway_name
   rownames(dfincoming) <- dfincoming$pathway_name
@@ -46,42 +46,44 @@ prephm <- function(df.netPx1outgoing) {
 #' @return a list of heatmaps
 #' @export
 #'
-#' @import ComplexHeatmap reshape2
+#' @import ComplexHeatmap reshape2 reshape
 #' @examples
 #'
 #' hm <- makehm(cellchatobj = cellchatobj, col_fun = cols)
 #' hm[[1]]
-makehm <- function(cellchatobj = cellchatobj,
-                   col_fun = cols,
-                   sources = c(),
-                   targets = c(),
-                   fontsize = 4,
-                   hmtitle = "title") {
+makehm <- function(cellchatobj,
+                   col_fun,
+                   sources,
+                   targets,
+                   fontsize,
+                   hmtitle) {
   hmobj <- cellchatobj
   col_fun = cols
+  size <- as.numeric(fontsize)
+  title <- as.character(hmtitle)
+
   df.netPx <- reshape2::melt(hmobj@netP$prob, value.name = "prob")
   colnames(df.netPx)[1:3] <- c("source","target","pathway_name")
 
   #choose cells
-  lensources <- length(sources)
-  df.netPx1outgoing <- df.netPx[(df.netPx$source==c('iCAF') | df.netPx$source==c('Lymphocyte') | df.netPx$source==c('Endothelial')) & (df.netPx$target=='CTL Lum ER-' | df.netPx$target=='CTL Lum ER+' | df.netPx$target=='CTL Basal'),]
+  df.netPx1outgoing <- df.netPx[(df.netPx$source %in% sources) & (df.netPx$target %in% targets),]
 
-  dfall4 <- prephm(df.netPx1outgoing)
+  dfall4 <- as.matrix(prephm(df.netPx1outgoing))
 
-  ht_allctrl = ComplexHeatmap::Heatmap(dfall4, name = title,
-                       top_annotation = HeatmapAnnotation(Ctrl = anno_barplot(as.numeric(colSums(dfall4)))),
-                       show_column_dend = FALSE,
-                       cluster_rows = FALSE,
-                       cluster_columns = FALSE,
-                       cluster_column_slices = FALSE,
-                       show_row_dend = FALSE,
-                       row_title = "Pathways",
-                       row_names_gp = gpar(fontsize = fontsize),
-                       column_split = paste0(c(rep("outgoing,", 3), rep("incoming,", length(targets-1)), rep("incoming", 1))),
-                       column_names_gp = grid::gpar(fontsize = 8),
-                       column_title_side="bottom",
-                       col = col_fun) +
-    rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = gpar(fontsize = fontsize)))
+  ht_allctrl = ComplexHeatmap::Heatmap(dfall4, name = hmtitle,
+                                       top_annotation = HeatmapAnnotation(Ctrl = anno_barplot(as.numeric(colSums(dfall4)))),
+                                       show_column_dend = FALSE,
+                                       cluster_rows = FALSE,
+                                       cluster_columns = FALSE,
+                                       cluster_column_slices = FALSE,
+                                       show_row_dend = FALSE,
+                                       row_title = "Pathways",
+                                       row_names_gp = gpar(fontsize = size),
+                                       column_split = paste0(c(rep("outgoing,", length(sources)), rep("incoming,", length(targets)-1), rep("incoming", 1))),
+                                       column_names_gp = grid::gpar(fontsize = size),
+                                       column_title_side="bottom",
+                                       col = col_fun) +
+    rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = gpar(fontsize = size)))
 
   return(ht_allctrl)
 }
