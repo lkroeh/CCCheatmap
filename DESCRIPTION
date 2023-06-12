@@ -1,0 +1,14 @@
+Package: CCCheatmap
+Type: Package
+Title: CellChat Custom Heatmap
+Version: 0.1.0
+Author: Lina Kroehling
+Maintainer: LK <lkroeh@bu.edu>
+Description: Create Custom Heatmaps from CellChat Output
+    Create heatmaps showing communication probability per pathway between 
+    specific cell populations.
+License: GPL (>= 3)
+Encoding: UTF-8
+Imports: ComplexHeatmap, reshape2, stats
+LazyData: true
+RoxygenNote: 7.2.3
