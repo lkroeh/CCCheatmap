@@ -50,6 +50,7 @@ prephm <- function(df.netPx1outgoing) {
 #' @examples
 #'
 #' hm <- makehm(cellchatobj = cellchatobj, col_fun = cols)
+#' col_fun = colorRamp2(c(0, 0.005, 1), c("white", "darkseagreen2", "darkgreen"))
 #' hm[[1]]
 makehm <- function(cellchatobj,
                    col_fun,
@@ -58,7 +59,7 @@ makehm <- function(cellchatobj,
                    fontsize,
                    hmtitle) {
   hmobj <- cellchatobj
-  col_fun = cols
+  col_fun = col_fun
   size <- as.numeric(fontsize)
   title <- as.character(hmtitle)
 
