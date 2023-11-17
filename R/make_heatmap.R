@@ -80,7 +80,7 @@ makehm <- function(cellchatobj,
                                        show_row_dend = FALSE,
                                        row_title = "Pathways",
                                        row_names_gp = grid::gpar(fontsize = size),
-                                       column_split = paste0(c(rep("outgoing,", length(sources)), rep("incoming,", length(targets)-1), rep("incoming", 1))),
+                                       column_split = paste0(c(rep("outgoing", length(sources)), rep("incoming", length(targets)-1))),
                                        column_names_gp = grid::gpar(fontsize = size),
                                        column_title_side="bottom",
                                        col = col_fun) +
