@@ -51,6 +51,7 @@ prephm <- function(df.netPx1outgoing) {
 #'
 #' hm <- makehm(cellchatobj = cellchatobj, col_fun = cols)
 #' col_fun = colorRamp2(c(0, 0.005, 1), c("white", "darkseagreen2", "darkgreen"))
+#' col_fun = colorRamp2(c(0, 0.0001, 0.05, 3), c("grey", "lightyellow", "lightblue", "blue"))
 #' hm[[1]]
 makehm <- function(cellchatobj,
                    col_fun,
