@@ -15,7 +15,7 @@ prephm <- function(df.netPx1outgoing) {
 
   rownames(dfoutgoing) <- dfoutgoing$pathway_name
   rownames(dfincoming) <- dfincoming$pathway_name
-  dfall <- as.data.frame(merge(dfoutgoing, dfincoming))
+  dfall <- as.data.frame(merge(dfoutgoing, dfincoming, by = 'pathway_name'))
   rownames(dfall) <- dfall$pathway_name
   dfall1 <- dfall[,-1]
 
