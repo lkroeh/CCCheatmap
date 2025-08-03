@@ -88,7 +88,10 @@ makehm <- function(cellchatobj,
                                        col = col_fun) +
     rowAnnotation(pathway = anno_barplot(rowSums(dfall4))) + rowAnnotation(rn = anno_text(rownames(dfall4), gp = grid::gpar(fontsize = size)))
 
-  return(ht_allctrl)
+  results <- list()
+  results[[1]] <- quantile(dfall4)
+  results[[2]] <- ht_allctrl
+  return(results)
 }
 
 
