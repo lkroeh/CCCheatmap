@@ -31,5 +31,9 @@ library(CCCheatmap)
 cellchatobject
 hm <- makehm(cellchatobject)
 hm
+
+#example color mapping
+col_fun = colorRamp2(c(0, 0.0001, 0.01, 0.035, 2.5), c("grey", "lightyellow", "lightblue1","lightblue2", "blue"))
+#The function will also output the quantiles of the data used in the heatmap, which will help you map the colors
 ```
 
