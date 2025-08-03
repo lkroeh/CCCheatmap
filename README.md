@@ -35,5 +35,13 @@ hm
 #example color mapping
 col_fun = colorRamp2(c(0, 0.0001, 0.01, 0.035, 2.5), c("grey", "lightyellow", "lightblue1","lightblue2", "blue"))
 #The function will also output the quantiles of the data used in the heatmap, which will help you map the colors
+
+#Detailed Example
+makehm(cellchat,
+       col_fun = colorRamp2(c(0, 0.0001, 0.01, 0.035, 2.5), c("grey", "lightyellow", "lightblue1","lightblue2", "blue")),
+       sources = c("Epi1", "Epi2", "Epi3", "Epi4", "Epi5", "Epi6", "Epi7"),
+       targets = levels(cellchat@idents),
+       fontsize = 10,
+       hmtitle = "outgoing Epi signaling")
 ```
 
